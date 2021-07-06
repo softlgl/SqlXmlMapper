@@ -53,7 +53,75 @@ services.AddSqlXmlMapper("./SqlMapper","./SqlMapper2","./SqlMapper3");
  
 支持动态where和if判断，sql语句的形式和原生的ado.net写法保持一致即可
 如果不需要使用动态条件判断的时候直接写sql语句即可
- 
+
+##### 代码调用
+```cs
+IServiceCollection services = new ServiceCollection();
+services.AddSqlXmlMapper("./SqlMapper");
+IServiceProvider serviceProvider = services.BuildServiceProvider();
+
+using (StudentSystemContext studentContext = new StudentSystemContext())
+{
+    studentContext.Database.Log = Console.Write;
+
+    var groupListResult = studentContext.Database.Connection.Query<Program, StudentGroupDo>(serviceProvider, "GetStudentCount", new { Deleted = 0, NameCount = 1 });
+    foreach (var item in groupListResult)
+    {
+        Console.WriteLine($"{item.Id} {item.Name}");
+    }
+
+    var studentResult = studentContext.Database.Connection.Query<Program, StudentGroupDo>(serviceProvider, "GetStudents", new { Deleted = 0 });
+    foreach (var item in studentResult)
+    {
+        Console.WriteLine($"GetStudents:{item.Id} {item.Name}");
+    }
+
+    studentResult = studentContext.Database.Connection.Query<Program, StudentGroupDo>(serviceProvider, "GetStudents", new { Deleted = 0, Name = "小A" });
+    foreach (var item in studentResult)
+    {
+        Console.WriteLine($"GetStudentsWithName:{item.Id} {item.Name}");
+    }
+
+    var groupResult = studentContext.SqlQuery<Program, StudentGroupDo>(serviceProvider, "GetStudentCount", new { Deleted = 0, NameCount = 1 });
+    foreach (var item in groupResult)
+    {
+        Console.WriteLine($"{item.Id} {item.Name}");
+    }
+    Console.WriteLine();
+
+    var studentResult2 = studentContext.SqlQuery<Program, StudentGroupDo>(serviceProvider, "GetStudents", new { Deleted = 0 });
+    foreach (var item in studentResult2)
+    {
+        Console.WriteLine($"GetStudents:{item.Id} {item.Name}");
+    }
+    Console.WriteLine();
+
+    studentResult2 = studentContext.SqlQuery<Program, StudentGroupDo>(serviceProvider, "GetStudents", new { Deleted = 0, Name = "小A" });
+    foreach (var item in studentResult2)
+    {
+        Console.WriteLine($"GetStudentsWithName:{item.Id} {item.Name}");
+    }
+    Console.WriteLine();
+
+    var grades = studentContext.SqlQuery<Grade>(serviceProvider, "CoreMysql.Program.Grade", "GetGrades", new { Deleted = 1, Ids = new[] { 1, 3 } });
+    foreach (var item in grades)
+    {
+        Console.WriteLine($"GetGrade:{item.Id} {item.Name}");
+    }
+    grades = studentContext.SqlQuery<Grade>(serviceProvider, "CoreMysql.Program.Grade", "GetGrades2", new { Deleted = 0 });
+    foreach (var item in grades)
+    {
+        Console.WriteLine($"GetGrade2:{item.Id} {item.Name}");
+    }
+
+    var stuGradeClasses = studentContext.SqlQuery<StudentGradeClassDo>(serviceProvider, "CoreMysql.Program.Grade", "GetGradeStudent", new { Deleted = 0, ClassId = 1, GradeId = 1 });
+    foreach (var item in stuGradeClasses)
+    {
+        Console.WriteLine(item);
+    }
+}
+```
+详细用法和和介绍可参考[SqlXmlMapper使用说明.docx](https://github.com/softlgl/SqlXmlMapper/blob/main/SqlXmlMapper%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.docx)。**想了解详细的用法可以查看[测试项目](https://github.com/softlgl/SqlXmlMapper/blob/main/SqlXmlTest/Program.cs)使用示例**。
 
 ##### 使用DbContext扩展
 笔者在测试文件中写了一个关于EF查询的扩展示例[DbContextExtensions.cs](https://github.com/softlgl/SqlXmlMapper/blob/main/SqlXmlTest/DbContextExtensions.cs)用于演示，具体使用方式如下
