@@ -53,9 +53,12 @@ services.AddSqlXmlMapper("./SqlMapper","./SqlMapper2","./SqlMapper3");
  
 
 ##### 使用DbContext扩展
- 
+笔者在测试文件中写了一个关于EF查询的扩展示例[DbContextExtensions.cs](https://github.com/softlgl/SqlXmlMapper/blob/main/SqlXmlTest/DbContextExtensions.cs)用于演示，具体使用方式如下
 ①泛型第一个参数为命名空间即和xml里的声明的type保持一致，标识一组sql的标识
 比如这里可以是我们项目中的某个具体的Repository
 ②泛型的第二个参数表示查询返回结果对应的实体类型
 ③参数列表第一个表示IServiceProvider实例，第二个参数表示Sql的唯一标识Id，第三个参数表示要传递的参数查询条件
 如果是在一个Repository中想查询别的Repository命名空间下的sql,但是并不像直接引入这个Repository类，可以直接通过参数传递命名空间
+
+##### 使用文档
+笔者已将具体的使用文档放到了github中,可以下载[SqlXmlMapper使用说明.docx](https://github.com/softlgl/SqlXmlMapper/blob/main/SqlXmlMapper%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.docx)进行详细的查看或查看源码了解相关使用。
