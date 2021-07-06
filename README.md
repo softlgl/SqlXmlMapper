@@ -5,7 +5,7 @@
 本框架核心代码摘自[Insql](https://rainrcn.github.io/insql/#/),Insql定位是ORM,可以完全独立的引入它。SqlXmlMapper定位于基于Xml文件Sql语句扩展。所以很多场景并不冲突。作者只是以为单独引入ORM有点过于笨重，所以基于Insql精简了一下核心操作。
 
 ### 使用文档
-笔者已将具体的使用文档放到了github中,可以下载[SqlXmlMapper使用说明.docx](https://github.com/softlgl/SqlXmlMapper/blob/main/SqlXmlMapper%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.docx)进行详细的查看或查看源码了解相关使用。
+笔者已将具体的使用文档放到了github中,可以下载[SqlXmlMapper使用说明.docx](https://github.com/softlgl/SqlXmlMapper/blob/main/SqlXmlMapper%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.docx)进行详细的查看或查看源码了解相关使用。**想了解具体用法可以查看[测试项目](https://github.com/softlgl/SqlXmlMapper/blob/main/SqlXmlTest/Program.cs)使用示例**
 
 #### 使用场景
 针对业务场景中复杂查询的情况，使用EF虽然可以满足实现功能但是无法保证sql语句的可预料性。所以引入了将复杂Sql查询语句的xml化，编写规则符合ado.net的编程习惯，使用也比较简单。
