@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<insql type="CoreMysql.Program" >
+
+  <select id="GetStudentCount">
+    select Id,Name from Student
+    where Deleted=@Deleted
+    group by Id,Name
+    having <![CDATA[count(Name)>=@NameCount]]>
+  </select>
+
+  <select id="GetStudents">
+    select Id,Name from Student
+    <where>
+      Deleted=@Deleted
+      <if test="Name!=null">
+       and Name=@Name
+      </if>
+    </where>
+  </select>
+  
+</insql>

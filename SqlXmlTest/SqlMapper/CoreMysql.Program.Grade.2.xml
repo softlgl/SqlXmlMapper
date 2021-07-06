@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<insql type="CoreMysql.Program.Grade" >
+  <select id="GetGrades2">
+    select * from Grade
+    where Deleted=@Deleted
+    <if test="Name!=null">
+      and Name=@Name
+    </if>
+    <if test="CreateTime neq null">
+      and <![CDATA[CreateTime>=@CreateTime]]>
+    </if>
+    <if test="Ids != null">
+      and Id in
+      <each name="Ids" open="(" separator="," close=")" prefix="@"  />
+    </if>
+    limit 1
+  </select>
+  
+  <select id="GetGradeStudent">
+    SELECT
+    `Extent1`.`Id`
+    ,`Extent1`.`Name`
+    ,`Extent1`.`ClassId`
+    <if test="ClassId!=null">
+      ,`Extent2`.`Name` AS `ClassName`
+    </if>
+    <if test="GradeId!=null">
+      ,`Extent3`.`Name` AS `GradeName`
+    </if>
+    FROM `Student` AS `Extent1`
+    <if test="GradeId!=null">
+      INNER JOIN `ClassGrade` AS `Extent2` ON `Extent1`.`GradeId` = `Extent2`.`GradeId`
+    </if>
+    <if test="ClassId!=null">
+      INNER JOIN `Grade` AS `Extent3` ON `Extent1`.`ClassId` = `Extent3`.`Id`
+    </if>
+    WHERE `Extent1`.`Deleted`=@Deleted
+    <if test="ClassId!=null">
+      and `Extent1`.`ClassId`=@ClassId
+    </if>
+    <if test="GradeId!=null">
+      and `Extent1`.`GradeId`=@GradeId
+    </if>
+    ORDER BY
+    `Extent1`.`ClassId` ASC,
+    `Extent1`.`Id` ASC LIMIT 1
+  </select>
+
+  <!--<select id="GetGradeStudent">
+    SELECT
+    <if test="Columns != null">
+      <each name="Columns" separator="," />
+    </if>
+    FROM `Student` AS `Extent1`
+    INNER JOIN `ClassGrade` AS `Extent2` ON `Extent1`.`GradeId` = `Extent2`.`GradeId`
+    INNER JOIN `Grade` AS `Extent3` ON `Extent1`.`ClassId` = `Extent3`.`Id`
+    WHERE `Extent1`.`Deleted`=@Deleted
+    and `Extent1`.`ClassId`=@ClassId
+    and ``Extent1`.`GradeId`=@GradeId
+    ORDER BY
+    `Extent1`.`ClassId` ASC,
+    `Extent1`.`Id` ASC LIMIT 1
+  </select>-->
+</insql>

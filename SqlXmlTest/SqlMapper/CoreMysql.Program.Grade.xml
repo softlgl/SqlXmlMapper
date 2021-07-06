@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<insql type="CoreMysql.Program.Grade" >
+  <!--<select id="GetGrades">
+    select * from Grade
+    <where>
+      Deleted=@Deleted
+      <if test="Name!=null">
+       and Name=@Name
+      </if>
+      <if test="CreateTime neq null">
+       and <![CDATA[CreateTime>=@CreateTime]]>
+      </if>
+      <if test="Ids != null">
+        and Id in
+        <each name="Ids" open="(" separator="," close=")" prefix="@"  />
+      </if>
+    </where>
+    limit 1
+  </select>-->
+
+  <select id="GetGrades">
+    select * from Grade
+    where Deleted=@Deleted
+    <if test="Name!=null">
+      and Name=@Name
+    </if>
+    <if test="CreateTime neq null">
+      and <![CDATA[CreateTime>=@CreateTime]]>
+    </if>
+    <if test="Ids != null">
+      and Id in
+      <each name="Ids" open="(" separator="," close=")" prefix="@"  />
+    </if>
+    limit 1
+  </select>
+</insql>
